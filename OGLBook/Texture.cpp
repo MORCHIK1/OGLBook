@@ -1,6 +1,8 @@
 #include "Texture.h"
 
-Texture::Texture(const char* imageFile)
+const std::string Texture::BASE_TEXTURE_DIR = "textures/";
+
+Texture::Texture(const std::string imageFile) : m_imageFileName(imageFile)
 {
   glGenTextures(1, &textureID);
   glBindTexture(GL_TEXTURE_2D, textureID);
@@ -11,7 +13,9 @@ Texture::Texture(const char* imageFile)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
   int width, height, nrChannels;
-  unsigned char* data = stbi_load(imageFile, &width, &height,
+  std::string pathToTexture = BASE_TEXTURE_DIR + m_imageFileName;
+
+  unsigned char* data = stbi_load(pathToTexture.c_str(), &width, &height,
     &nrChannels, 0);
 
   if (data) {

@@ -36,7 +36,7 @@ int main()
   }
 
   Shader ourShader("vertexShader.vs", "fragmentShader.glsl");
-  Texture ourTexture("textures/container.jpg");
+  Texture ourTexture("container.jpg");
   
   float vertices[] = {
     //Positions        //Colors     //Textures
@@ -86,6 +86,7 @@ int main()
 
     ourTexture.use();
     ourShader.use();
+
     glBindVertexArray(VAO);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -97,7 +98,6 @@ int main()
   glDeleteVertexArrays(1, &VAO);
   glDeleteBuffers(1, &VBO);
   glDeleteBuffers(1, &EBO);
-  glDeleteProgram(ourShader.ID);
 
   glfwTerminate();
   return 0;

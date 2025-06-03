@@ -121,3 +121,8 @@ void Shader::setFloat(const std::string& name, float value) const
 
   glUniform1f(location, value);
 }
+
+Shader::~Shader()
+{
+  glDeleteProgram(ID);
+}

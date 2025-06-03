@@ -8,12 +8,20 @@
 #include "stb_image.h"
 
 class Texture {
-public:
+private:
+
   unsigned int textureID;
 
-  Texture(const char* imageFile);
+  static const std::string BASE_TEXTURE_DIR;
+
+  std::string m_imageFileName;
+
+public:
+  Texture(const std::string imageFile);
 
   void use() const;
+
+  const std::string& getImageFileName() const { return m_imageFileName; }
 
   ~Texture();
 };
