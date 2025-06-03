@@ -16,14 +16,21 @@ Shader::Shader(const char* vertexShader, const char* fragmentShader)
     fShaderFile.open(fragmentShader);
     std::stringstream vShaderStream, fShaderStream;
 
-    vShaderStream << vShaderFile.rdbuf();
-    fShaderStream << fShaderFile.rdbuf();
+    //std::stringstream: A stream class that operates on strings. It allows you to read from and write to a string as if it were a file or console stream.
+
+    vShaderStream << vShaderFile.rdbuf(); //This is a common and efficient way to read the entire content of a file into a string stream.                               
+    fShaderStream << fShaderFile.rdbuf(); //vShaderFile.rdbuf() : Returns a pointer to the stream buffer object associated with vShaderFile.The stream buffer is the underlying object that handles the actual character I / O.
 
     vShaderFile.close();
     fShaderFile.close();
 
-    vertexCode = vShaderStream.str();
+    vertexCode = vShaderStream.str(); 
     fragmentCode = fShaderStream.str();
+
+    /*
+    vShaderStream.str(): Calls the str() member function of the vShaderStream object.
+    This function returns a std::string object containing a copy of all the characters currently stored in the string stream.
+    */
   }
   catch (std::ifstream::failure e) {
     std::cout << "ERROR IN OPENING/READING FILE" << std::endl;
@@ -82,17 +89,21 @@ void Shader::use()
   glUseProgram(ID);
 }
 
-void Shader::SetBool(const std::string& name, bool value) const
+void Shader::setBool(const std::string& name, bool value) const
 {
   glUniform1i(glGetUniformLocation(ID, name.c_str()), static_cast<GLint>(value));
 }
 
-void Shader::SetInt(const std::string& name, int value) const
+void Shader::setInt(const std::string& name, int value) const
 {
   glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
 }
 
-void Shader::SetFloat(const std::string& name, float value) const
+void Shader::setFloat(const std::string& name, float value) const
 {
-  glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+  GLint location = glGetUniformLocation(ID, name.c_str());
+  if (location == -1) {
+    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << ID << " (location was -1)!" << std::endl;
+  }
+  glUniform1f(location, value);
 }

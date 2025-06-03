@@ -24,17 +24,23 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="stbimage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vertexShader.vs">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="fragmentShader.fs">
+    <None Include="fragmentShader.glsl">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

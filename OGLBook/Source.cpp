@@ -1,6 +1,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <vector>
+#include "stb_image.h"
 #include <iostream>
 
 #include "Shader.h"
@@ -35,12 +35,14 @@ int main()
     return -1;
   }
 
-  Shader ourShader("vertexShader.vs", "fragmentShader.fs");
+  Shader ourShader("vertexShader.vs", "fragmentShader.glsl");
+
+  float offset = 0.5f;
 
   float vertices[] = {
-    0.5f, -0.5f,  0.0f, 1.f, 0.f, 0.f, //right red color
-   -0.5f, -0.5f,  0.0f, 0.f, 1.f, 0.f, //left green color
-    0.0f,  0.5f,  0.0f, 0.f, 0.f, 1.f  //top blue color
+    0.5f, -0.5f, 0.0f, 1.f, 0.f, 0.f, //right red color
+   -0.5f, -0.5f, 0.0f, 0.f, 1.f, 0.f, //left green color
+    0.0f,  0.5f, 0.0f, 0.f, 0.f, 1.f  //top blue color
   };
 
   unsigned int indices[] = {
@@ -48,7 +50,6 @@ int main()
   };
 
   unsigned int VAO, VBO, EBO;
-
 
   glGenVertexArrays(1, &VAO);
   glGenBuffers(1, &VBO);
@@ -80,10 +81,11 @@ int main()
 
     ourShader.use();
 
+    ourShader.setFloat("xOffset", offset);
+
     glBindVertexArray(VAO);
 
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
+    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 
     glfwSwapBuffers(window);
     glfwPollEvents();
