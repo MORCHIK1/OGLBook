@@ -91,19 +91,33 @@ void Shader::use()
 
 void Shader::setBool(const std::string& name, bool value) const
 {
-  glUniform1i(glGetUniformLocation(ID, name.c_str()), static_cast<GLint>(value));
+  GLint location = glGetUniformLocation(ID, name.c_str());
+
+  if (location == -1) {
+    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << ID << " (location was -1)!" << std::endl;
+  }
+
+  glUniform1i(location, static_cast<GLint>(value));
 }
 
 void Shader::setInt(const std::string& name, int value) const
 {
-  glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+  GLint location = glGetUniformLocation(ID, name.c_str());
+
+  if (location == -1) {
+    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << ID << " (location was -1)!" << std::endl;
+  }
+
+  glUniform1i(location, value);
 }
 
 void Shader::setFloat(const std::string& name, float value) const
 {
   GLint location = glGetUniformLocation(ID, name.c_str());
+
   if (location == -1) {
     std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << ID << " (location was -1)!" << std::endl;
   }
+
   glUniform1f(location, value);
 }

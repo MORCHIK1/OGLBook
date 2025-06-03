@@ -1,9 +1,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "stb_image.h"
 #include <iostream>
 
 #include "Shader.h"
+#include "Texture.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -36,17 +36,19 @@ int main()
   }
 
   Shader ourShader("vertexShader.vs", "fragmentShader.glsl");
-
-  float offset = 0.5f;
-
+  Texture ourTexture("textures/container.jpg");
+  
   float vertices[] = {
-    0.5f, -0.5f, 0.0f, 1.f, 0.f, 0.f, //right red color
-   -0.5f, -0.5f, 0.0f, 0.f, 1.f, 0.f, //left green color
-    0.0f,  0.5f, 0.0f, 0.f, 0.f, 1.f  //top blue color
+    //Positions        //Colors     //Textures
+    0.5f, -0.5f, 0.0f, 1.f, 0.f, 0.f, 1.f, 0.f, //bottom right red color 
+   -0.5f, -0.5f, 0.0f, 0.f, 1.f, 0.f, 0.f, 0.f, //bottom left green color
+    0.5f,  0.5f, 0.0f, 0.f, 0.f, 1.f, 1.f, 1.f, //top rigt blue color
+   -0.5f,  0.5f, 0.0f, 1.f, 1.f, 0.f, 0.f, 1.f  //top left yellow color
   };
 
   unsigned int indices[] = {
     0,1,2,
+    1,2,3
   };
 
   unsigned int VAO, VBO, EBO;
@@ -62,11 +64,14 @@ int main()
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
 
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
   glEnableVertexAttribArray(1);
+
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+  glEnableVertexAttribArray(2);
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -79,13 +84,11 @@ int main()
     glClearColor(0.2f, 0.2f, 0.2f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    ourTexture.use();
     ourShader.use();
-
-    ourShader.setFloat("xOffset", offset);
-
     glBindVertexArray(VAO);
 
-    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     glfwSwapBuffers(window);
     glfwPollEvents();
