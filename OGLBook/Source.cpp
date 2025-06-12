@@ -11,8 +11,8 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const float SCR_WIDTH = 800.0f;
+const float SCR_HEIGHT = 600.0f;
 
 int main()
 {
@@ -22,7 +22,7 @@ int main()
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+  GLFWwindow* window = glfwCreateWindow(static_cast<int>(SCR_WIDTH), static_cast<int>(SCR_HEIGHT), "LearnOpenGL", NULL, NULL);
   if (window == NULL)
   {
     std::cout << "Failed to create GLFW window" << std::endl;
@@ -83,6 +83,7 @@ int main()
   ourShader.setInt("texture1", 0);
   ourShader.setInt("texture2", 1);
 
+
   while (!glfwWindowShouldClose(window))
   {
     processInput(window);
@@ -90,16 +91,31 @@ int main()
     glClearColor(0.2f, 0.2f, 0.2f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    ourContainerTexture.use(0);
+    //Using all textures and shaders
+    ourContainerTexture.use(0); 
     ourFaceTexture.use(1);
     ourShader.use();
-
+    
+    //Creating transform matrix for rotation and translation
     glm::mat4 trans = glm::mat4(1.f);
 
-    trans = glm::rotate(trans, static_cast<float>(glfwGetTime()), glm::vec3(0.f, 0.f, 1.f));
     trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.f));
+    trans = glm::rotate(trans, static_cast<float>(glfwGetTime()), glm::vec3(0.f, 0.f, 1.f));
 
     ourShader.setMat4("transform", trans);
+    
+    //Creating model, view, projection matrices for 3D and sending it to vertexShader
+    glm::mat4 model      = glm::mat4(1.f);
+    glm::mat4 view       = glm::mat4(1.f);
+    glm::mat4 projection = glm::mat4(1.f);
+
+    model = glm::rotate(model, glm::radians(-55.f), glm::vec3(1.f, 0.f, 0.f)); //Rotating our object
+    view = glm::translate(view, glm::vec3(0.f, 0.f, -3.f));
+    projection = glm::perspective(glm::radians(55.f), SCR_WIDTH / SCR_HEIGHT, 0.1f, 100.f); //fov, aspect ratio, near distance, far distance
+
+    ourShader.setMat4("model", model);
+    ourShader.setMat4("view", view);
+    ourShader.setMat4("projection", projection);
 
     glBindVertexArray(VAO);
 
