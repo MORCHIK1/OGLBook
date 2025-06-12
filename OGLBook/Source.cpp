@@ -1,6 +1,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "Shader.h"
 #include "Texture.h"
@@ -36,14 +39,15 @@ int main()
   }
 
   Shader ourShader("vertexShader.vs", "fragmentShader.glsl");
-  Texture ourTexture("container.jpg");
+  Texture ourContainerTexture("container.jpg");
+  Texture ourFaceTexture("awesomeface.png");
   
   float vertices[] = {
-    //Positions        //Colors     //Textures
-    0.5f, -0.5f, 0.0f, 1.f, 0.f, 0.f, 1.f, 0.f, //bottom right red color 
-   -0.5f, -0.5f, 0.0f, 0.f, 1.f, 0.f, 0.f, 0.f, //bottom left green color
-    0.5f,  0.5f, 0.0f, 0.f, 0.f, 1.f, 1.f, 1.f, //top rigt blue color
-   -0.5f,  0.5f, 0.0f, 1.f, 1.f, 0.f, 0.f, 1.f  //top left yellow color
+    //Positions      //Textures
+    0.5f, -0.5f, 0.0f, 1.f, 0.f, //bottom right red color 
+   -0.5f, -0.5f, 0.0f, 0.f, 0.f, //bottom left green color
+    0.5f,  0.5f, 0.0f, 1.f, 1.f, //top rigt blue color
+   -0.5f,  0.5f, 0.0f, 0.f, 1.f  //top left yellow color
   };
 
   unsigned int indices[] = {
@@ -64,18 +68,24 @@ int main()
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
 
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
   glEnableVertexAttribArray(1);
-
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-  glEnableVertexAttribArray(2);
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
   glBindVertexArray(0);
+
+  ourShader.use();
+
+  ourShader.setInt("texture1", 0);
+  ourShader.setInt("texture2", 1);
+
+  glm::mat4 trans = glm::mat4(1.f);
+  trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.f));
+
 
   while (!glfwWindowShouldClose(window))
   {
@@ -84,8 +94,12 @@ int main()
     glClearColor(0.2f, 0.2f, 0.2f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    ourTexture.use();
+    ourContainerTexture.use(0);
+    ourFaceTexture.use(1);
     ourShader.use();
+    trans = glm::rotate(trans, static_cast<float>(glfwGetTime()), glm::vec3(0.f, 0.f, 1.f));
+
+    ourShader.setMat4("transform", trans);
 
     glBindVertexArray(VAO);
 

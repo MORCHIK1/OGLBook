@@ -122,6 +122,17 @@ void Shader::setFloat(const std::string& name, float value) const
   glUniform1f(location, value);
 }
 
+void Shader::setMat4(const std::string& name, glm::mat4 value) const
+{
+  GLint location = glGetUniformLocation(ID, name.c_str());
+
+  if (location == -1) {
+    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << ID << " (location was -1)!" << std::endl;
+  }
+
+  glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
+}
+
 Shader::~Shader()
 {
   glDeleteProgram(ID);

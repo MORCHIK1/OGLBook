@@ -9,7 +9,6 @@
 
 class Texture {
 private:
-
   unsigned int textureID;
 
   static const std::string BASE_TEXTURE_DIR;
@@ -19,7 +18,7 @@ private:
 public:
   Texture(const std::string imageFile);
 
-  void use() const;
+  void use(unsigned int textureUnit) const;
 
   const std::string& getImageFileName() const { return m_imageFileName; }
 
