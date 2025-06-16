@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
 
 class Camera
 {
@@ -15,6 +16,8 @@ private:
   glm::vec3 cameraPos;
   glm::vec3 cameraUp;
   glm::vec3 cameraFront;
+  glm::vec3 cameraRight;
+  const glm::vec3 worldUp;
 
   GLFWwindow* window;
 
@@ -28,6 +31,7 @@ private:
 
   static void zoomCallback(GLFWwindow* window, double xoffset, double yoffset);
   static void cursorCallback(GLFWwindow* window, double xposIn, double yposIn);
+  void updateCameraVectors();
 public:
   Camera(float screenWidth, float screenHeight, GLFWwindow* window);
 
@@ -36,6 +40,8 @@ public:
   glm::mat4 getView();
 
   glm::mat4 getPerspective();
+
+  float getFov();
 
   void processInput(float deltaTime);
 };

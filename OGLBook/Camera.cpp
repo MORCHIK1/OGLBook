@@ -3,6 +3,10 @@
 void Camera::zoomCallback(GLFWwindow* mainWindow, double xoffset, double yoffset)
 {
   Camera* camera = static_cast<Camera*>(glfwGetWindowUserPointer(mainWindow));
+  if (!camera) {
+    std::cout << "ERROR IN RETRIEVING CAMERA FOR ZOOM CALLBACK" << std::endl;
+    return;
+  }
   camera->fov -= static_cast<float>(yoffset);
 
   if (camera->fov < 1.f)
@@ -14,6 +18,10 @@ void Camera::zoomCallback(GLFWwindow* mainWindow, double xoffset, double yoffset
 void Camera::cursorCallback(GLFWwindow* mainWindow, double xposIn, double yposIn)
 {
   Camera* camera = static_cast<Camera*>(glfwGetWindowUserPointer(mainWindow));
+  if (!camera) {
+    std::cout << "ERROR IN RETRIEVING CAMERA FOR CURSOR CALLBACK" << std::endl;
+    return;
+  }
   float xpos = static_cast<float>(xposIn);
   float ypos = static_cast<float>(yposIn);
 
@@ -41,21 +49,32 @@ void Camera::cursorCallback(GLFWwindow* mainWindow, double xposIn, double yposIn
   if (camera->pitch < -89.f)
     camera->pitch = -89.f;
 
-  glm::vec3 front{};
-
-  front.x = cos(glm::radians(camera->yaw)) * cos(glm::radians(camera->pitch));
-  front.y = sin(glm::radians(camera->pitch));
-  front.z = sin(glm::radians(camera->yaw)) * cos(glm::radians(camera->pitch));
-
-  camera->cameraFront = glm::normalize(front);
+  camera->updateCameraVectors();
 }
 
 Camera::Camera(float screenWidth, float screenHeight, GLFWwindow* mainWindow) : 
   SCR_HEIGHT(screenHeight), SCR_WIDTH(screenWidth), window(mainWindow),
-  pitch(0.f), yaw(-90.f), cameraFront(glm::vec3(0.f, -1.f, 0.f)),
+  pitch(0.f), yaw(-90.f), cameraFront(glm::vec3(0.f, 0.f, -1.f)),
   cameraPos(glm::vec3(0.0f, 0.0f, 3.0f)), cameraUp(glm::vec3(0.f, 1.f, 0.f)),
-  firstMouse(true), fov(45.f), lastX(SCR_WIDTH / 2.f), lastY(SCR_HEIGHT / 2.f)
+  firstMouse(true), fov(45.f), worldUp(glm::vec3(0.f, 1.f, 0.f))
 {
+  lastX = SCR_WIDTH / 2.f;
+  lastY = SCR_HEIGHT / 2.f;
+
+  updateCameraVectors();
+}
+
+void Camera::updateCameraVectors()
+{
+  glm::vec3 front;
+  front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+  front.y = sin(glm::radians(pitch));
+  front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+  cameraFront = glm::normalize(front);
+
+  // Recalculate Right and Up vectors
+  cameraRight = glm::normalize(glm::cross(cameraFront, worldUp));
+  cameraUp = glm::normalize(glm::cross(cameraRight, cameraFront)); // Create the new 'up' specific to the camera's orientation
 }
 
 void Camera::setupInputCallback()
@@ -76,6 +95,11 @@ glm::mat4 Camera::getView()
 glm::mat4 Camera::getPerspective()
 {
   return glm::perspective(glm::radians(fov), SCR_WIDTH / SCR_HEIGHT, 0.1f, 100.f);;
+}
+
+float Camera::getFov()
+{
+  return fov;
 }
 
 void Camera::processInput(float deltaTime) {
