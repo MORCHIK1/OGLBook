@@ -133,6 +133,50 @@ void Shader::setMat4(const std::string& name, glm::mat4 value) const
   glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
 }
 
+void Shader::setVec3(const std::string& name, glm::vec3 value) const
+{
+  GLint location = glGetUniformLocation(ID, name.c_str());
+
+  if (location == -1) {
+    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << ID << " (location was -1)!" << std::endl;
+  }
+
+  glUniform3fv(location, 1,&value[0]);
+}
+
+void Shader::setVec3(const std::string& name, float x, float y, float z) const
+{
+  GLint location = glGetUniformLocation(ID, name.c_str());
+
+  if (location == -1) {
+    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << ID << " (location was -1)!" << std::endl;
+  }
+
+  glUniform3f(location, x, y, z);
+}
+
+void Shader::setVec2(const std::string& name, glm::vec2 value) const
+{
+  GLint location = glGetUniformLocation(ID, name.c_str());
+
+  if (location == -1) {
+    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << ID << " (location was -1)!" << std::endl;
+  }
+
+  glUniform2fv(location, 1, &value[0]);
+}
+
+void Shader::setVec2(const std::string& name, float x, float y) const
+{
+  GLint location = glGetUniformLocation(ID, name.c_str());
+
+  if (location == -1) {
+    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << ID << " (location was -1)!" << std::endl;
+  }
+
+  glUniform2f(location, x, y);
+}
+
 Shader::~Shader()
 {
   glDeleteProgram(ID);
