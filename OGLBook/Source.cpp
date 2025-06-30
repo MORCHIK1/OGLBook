@@ -131,8 +131,6 @@ int main()
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
   glEnableVertexAttribArray(2);
 
-  glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
-
   glEnable(GL_DEPTH_TEST);
 
   while (!glfwWindowShouldClose(window))
@@ -140,6 +138,8 @@ int main()
     float currentFrame = static_cast<float>(glfwGetTime());
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
+
+    glm::vec3 lightPos(2.f * sin(glfwGetTime()), 0.5f, 2.f * cos(glfwGetTime()));
 
     camera.processInput(deltaTime);
 
