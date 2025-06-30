@@ -52,10 +52,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="vertexShader.vs">
+    <None Include="cubeVertexShader.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="fragmentShader.glsl">
+    <None Include="cubeFragmentShader.glsl">
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="lightVertexShader.vs">
