@@ -52,17 +52,26 @@ void Camera::cursorCallback(GLFWwindow* mainWindow, double xposIn, double yposIn
   camera->updateCameraVectors();
 }
 
-Camera::Camera(float screenWidth, float screenHeight, GLFWwindow* mainWindow) : 
-  SCR_HEIGHT(screenHeight), SCR_WIDTH(screenWidth), window(mainWindow),
-  pitch(0.f), yaw(-90.f), cameraFront(glm::vec3(0.f, 0.f, -1.f)),
-  cameraPos(glm::vec3(0.0f, 0.0f, 3.0f)), cameraUp(glm::vec3(0.f, 1.f, 0.f)),
-  firstMouse(true), fov(45.f), worldUp(glm::vec3(0.f, 1.f, 0.f))
+Camera::Camera(GLFWwindow* mainWindow) : 
+  window(mainWindow), 
+  pitch(0.f), 
+  yaw(-90.f), 
+  cameraFront(glm::vec3(0.f, 0.f, -1.f)), 
+  cameraPos(glm::vec3(0.0f, 0.0f, 3.0f)), 
+  cameraUp(glm::vec3(0.f, 1.f, 0.f)), 
+  firstMouse(true), 
+  fov(45.f), 
+  worldUp(glm::vec3(0.f, 1.f, 0.f))
 {
-  lastX = SCR_WIDTH / 2.f;
-  lastY = SCR_HEIGHT / 2.f;
+  int screenWidth, screenHeight;
+
+  glfwGetFramebufferSize(mainWindow, &screenWidth, &screenHeight);
+
+  lastX = static_cast<float>(screenWidth) / 2.f;
+  lastY = static_cast<float>(screenHeight) / 2.f;
 
   updateCameraVectors();
-}
+} 
 
 void Camera::updateCameraVectors()
 {
@@ -92,9 +101,13 @@ glm::mat4 Camera::getView()
   return glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 }
 
-glm::mat4 Camera::getPerspective()
+glm::mat4 Camera::getPerspective(float screenWidth, float screenHeight)
 {
-  return glm::perspective(glm::radians(fov), SCR_WIDTH / SCR_HEIGHT, 0.1f, 100.f);;
+  // Prevent division by zero if window is minimized
+  if (screenHeight == 0) screenHeight = 1;
+
+  float aspectRatio = screenWidth / screenHeight;
+  return glm::perspective(glm::radians(fov), aspectRatio, 0.1f, 100.f);
 }
 
 float Camera::getFov()

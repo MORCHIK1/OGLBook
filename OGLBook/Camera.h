@@ -25,21 +25,19 @@ private:
   float lastX;
   float lastY;
   float fov;
-  float SCR_WIDTH;
-  float SCR_HEIGHT;
   bool firstMouse;
 
   static void zoomCallback(GLFWwindow* window, double xoffset, double yoffset);
   static void cursorCallback(GLFWwindow* window, double xposIn, double yposIn);
   void updateCameraVectors();
 public:
-  Camera(float screenWidth, float screenHeight, GLFWwindow* window);
+  Camera(GLFWwindow* window);
 
   void setupInputCallback();
 
   glm::mat4 getView();
 
-  glm::mat4 getPerspective();
+  glm::mat4 getPerspective(float screenWidth, float screenHeight);
 
   float getFov();
 
