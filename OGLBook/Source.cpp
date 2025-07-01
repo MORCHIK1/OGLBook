@@ -151,7 +151,6 @@ int main()
     cubeShader.setVec3("objectColor", 1.f, 0.5f, 0.3f);
     cubeShader.setVec3("lightColor", 1.f, 1.f, 1.f);
     cubeShader.setVec3("lightPos", lightPos);
-    cubeShader.setVec3("viewPos", camera.getCameraPos());
 
     //Creating view, projection matrices for 3D and sending it to vertexShader
     glm::mat4 view = camera.getView();
