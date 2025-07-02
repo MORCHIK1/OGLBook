@@ -22,6 +22,8 @@ public:
 
   const std::string& getImageFileName() const { return m_imageFileName; }
 
+  unsigned int getID();
+
   ~Texture();
 };
 

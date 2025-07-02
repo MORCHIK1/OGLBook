@@ -52,6 +52,11 @@ void Texture::use(unsigned int textureUnit) const
   glBindTexture(GL_TEXTURE_2D, textureID);
 }
 
+unsigned int Texture::getID()
+{
+  return textureID;
+}
+
 Texture::~Texture() {
   glDeleteTextures(1, &textureID);
 }

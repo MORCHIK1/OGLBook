@@ -46,6 +46,9 @@ int main()
   Shader cubeShader("cubeVertexShader.vs", "cubeFragmentShader.glsl");
   Shader lightShader("lightVertexShader.vs", "lightFragmentShader.glsl");
 
+  Texture containerTexture("container2.png");
+  Texture specularContainerTexture("container2_specular.png");
+
   camera.setupInputCallback();
 
   float vertices[] = {
@@ -125,11 +128,8 @@ int main()
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
 
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-  glEnableVertexAttribArray(1);
-
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-  glEnableVertexAttribArray(2);
+  
+  //cubeShader.setInt("texture2", 1);
 
   glEnable(GL_DEPTH_TEST);
 
@@ -150,29 +150,21 @@ int main()
     glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
 
     //Using all textures and shaders
+    containerTexture.use(0);
+    specularContainerTexture.use(1);
     cubeShader.use();
-    glm::vec3 lightColor;
 
-    lightColor.x = static_cast<float>(sin(glfwGetTime() * 2.0f));
-
-    lightColor.y = static_cast<float>(sin(glfwGetTime() * 0.7f));
-                                                               
-    lightColor.z = static_cast<float>(sin(glfwGetTime() * 1.3f));
-
-    glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
-    glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
-
-    cubeShader.setVec3("light.ambient", ambientColor);
-    cubeShader.setVec3("light.diffuse", diffuseColor);
-
+    //Set light
+    cubeShader.setVec3("light.ambient", 0.3f, 0.3f, 0.f);
+    cubeShader.setVec3("light.diffuse", 0.7f, 0.6f, 0.3f);
     cubeShader.setVec3("light.specular", 1.f, 1.f, 1.f);
     cubeShader.setVec3("light.position", lightPos);
+
     cubeShader.setVec3("viewPos", camera.getCameraPos());
 
-    //
-    cubeShader.setVec3("material.ambient", 1.f, 0.5f, 0.3f);
-    cubeShader.setVec3("material.diffuse", 1.f, 0.5f, 0.3f);
-    cubeShader.setVec3("material.specular", 0.f, 0.5f, 0.3f);
+    //Set material
+    cubeShader.setInt("material.ambientDiffuse", 0);
+    cubeShader.setInt("material.specular", 1);
     cubeShader.setFloat("material.shininess", 32.f);
 
     //Creating view, projection matrices for 3D and sending it to vertexShader
