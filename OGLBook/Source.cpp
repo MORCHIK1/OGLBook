@@ -151,10 +151,29 @@ int main()
 
     //Using all textures and shaders
     cubeShader.use();
-    cubeShader.setVec3("objectColor", 1.f, 0.5f, 0.3f);
-    cubeShader.setVec3("lightColor", 1.f, 1.f, 1.f);
-    cubeShader.setVec3("lightPos", lightPos);
+    glm::vec3 lightColor;
+
+    lightColor.x = static_cast<float>(sin(glfwGetTime() * 2.0f));
+
+    lightColor.y = static_cast<float>(sin(glfwGetTime() * 0.7f));
+                                                               
+    lightColor.z = static_cast<float>(sin(glfwGetTime() * 1.3f));
+
+    glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
+    glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+
+    cubeShader.setVec3("light.ambient", ambientColor);
+    cubeShader.setVec3("light.diffuse", diffuseColor);
+
+    cubeShader.setVec3("light.specular", 1.f, 1.f, 1.f);
+    cubeShader.setVec3("light.position", lightPos);
     cubeShader.setVec3("viewPos", camera.getCameraPos());
+
+    //
+    cubeShader.setVec3("material.ambient", 1.f, 0.5f, 0.3f);
+    cubeShader.setVec3("material.diffuse", 1.f, 0.5f, 0.3f);
+    cubeShader.setVec3("material.specular", 0.f, 0.5f, 0.3f);
+    cubeShader.setFloat("material.shininess", 32.f);
 
     //Creating view, projection matrices for 3D and sending it to vertexShader
     glm::mat4 view = camera.getView();
