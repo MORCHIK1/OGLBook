@@ -172,7 +172,7 @@ int main()
 
     cubeShader.setVec3("viewPos", camera.getCameraPos());
 
-    //Setting values for streetlight type of light
+    //Setting values for attenuation type of light
     cubeShader.setFloat("light.constantTerm", 1.f);
     cubeShader.setFloat("light.linearTerm", 0.09f);
     cubeShader.setFloat("light.quadraticTerm", 0.032f);
