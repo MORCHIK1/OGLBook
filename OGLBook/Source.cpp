@@ -143,7 +143,7 @@ int main()
   glEnableVertexAttribArray(0);
 
   
-  //cubeShader.setInt("texture2", 1);
+  glm::vec3 lightPosition = glm::vec3(4.f, 1.f, 2.f);
 
   glEnable(GL_DEPTH_TEST);
 
@@ -164,14 +164,17 @@ int main()
     //Using shaders
     cubeShader.use();
 
-    cubeShader.setVec3("light.direction", -0.2f, -1.0f, -0.3f);
+    cubeShader.setVec3("light.position", lightPosition);
     cubeShader.setVec3("viewPos", camera.getCameraPos());
+
+    cubeShader.setFloat("light.constantTerm", 1.f);
+    cubeShader.setFloat("light.linearTerm", 0.07f);
+    cubeShader.setFloat("light.quadraticTerm", 0.032f);
 
     //Set light
     cubeShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
     cubeShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
     cubeShader.setVec3("light.specular", 1.f, 1.f, 1.f);
-
 
     //Set material
     cubeShader.setInt("material.ambientDiffuse", 0);
@@ -202,6 +205,21 @@ int main()
       cubeShader.setMat4("model", model);
       glDrawArrays(GL_TRIANGLES, 0, 36);
     }
+
+    lightShader.use();
+
+    model = glm::mat4(1.f);
+    model = glm::translate(model, lightPosition);
+    model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+
+    lightShader.setMat4("model", model);
+    lightShader.setMat4("projection", projection);
+    lightShader.setMat4("view", view);
+
+    glBindVertexArray(VAOlight);
+
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+
 
     glfwSwapBuffers(window);
     glfwPollEvents();
