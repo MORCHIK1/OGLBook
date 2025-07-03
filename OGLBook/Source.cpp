@@ -164,16 +164,22 @@ int main()
     //Using shaders
     cubeShader.use();
 
-    cubeShader.setVec3("light.position", lightPosition);
+    //Setting values for flashlight type of light
+    cubeShader.setVec3("light.position", camera.getCameraPos());
+    cubeShader.setVec3("light.direction", camera.getCameraFront());
+    cubeShader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+    cubeShader.setFloat("light.outerCutOff", glm::cos(glm::radians(18.5f)));
+
     cubeShader.setVec3("viewPos", camera.getCameraPos());
 
+    //Setting values for streetlight type of light
     cubeShader.setFloat("light.constantTerm", 1.f);
-    cubeShader.setFloat("light.linearTerm", 0.07f);
+    cubeShader.setFloat("light.linearTerm", 0.09f);
     cubeShader.setFloat("light.quadraticTerm", 0.032f);
 
     //Set light
     cubeShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-    cubeShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+    cubeShader.setVec3("light.diffuse", 0.8f, 0.8f, 0.8f);
     cubeShader.setVec3("light.specular", 1.f, 1.f, 1.f);
 
     //Set material
@@ -206,15 +212,17 @@ int main()
       glDrawArrays(GL_TRIANGLES, 0, 36);
     }
 
-    lightShader.use();
+    //We comment out the light cube because we are currently testing flashlight type of light
 
-    model = glm::mat4(1.f);
-    model = glm::translate(model, lightPosition);
-    model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-
-    lightShader.setMat4("model", model);
-    lightShader.setMat4("projection", projection);
-    lightShader.setMat4("view", view);
+    //lightShader.use();
+    //
+    //model = glm::mat4(1.f);
+    //model = glm::translate(model, lightPosition);
+    //model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+    //
+    //lightShader.setMat4("model", model);
+    //lightShader.setMat4("projection", projection);
+    //lightShader.setMat4("view", view);
 
     glBindVertexArray(VAOlight);
 

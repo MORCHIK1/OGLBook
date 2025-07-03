@@ -42,6 +42,7 @@ public:
   float getFov();
 
   glm::vec3 getCameraPos();
+  glm::vec3 getCameraFront();
 
   void processInput(float deltaTime);
 };

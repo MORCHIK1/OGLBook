@@ -120,6 +120,11 @@ glm::vec3 Camera::getCameraPos()
   return cameraPos;
 }
 
+glm::vec3 Camera::getCameraFront()
+{
+    return cameraFront;
+}
+
 void Camera::processInput(float deltaTime) {
   float cameraSpeed = static_cast<float>(2.5 * deltaTime);
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
