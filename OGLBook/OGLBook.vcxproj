@@ -146,10 +146,10 @@
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="cubeFragmentShader.glsl" />
-    <None Include="lightFragmentShader.glsl" />
-    <None Include="lightVertexShader.vs" />
-    <None Include="cubeVertexShader.vs" />
+    <None Include="cubeFragmentShader.frag" />
+    <None Include="lightFragmentShader.frag" />
+    <None Include="lightVertexShader.vert" />
+    <None Include="cubeVertexShader.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\awesomeface.png" />
