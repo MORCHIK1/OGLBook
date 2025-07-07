@@ -1,11 +1,11 @@
-#include "Texture.h"
+#include "Textures.h"
 
-const std::string Texture::BASE_TEXTURE_DIR = "textures/";
+const std::string Textures::BASE_TEXTURE_DIR = "textures/";
 
-Texture::Texture(const std::string imageFile) : m_imageFileName(imageFile)
+Textures::Textures(const std::string imageFile) : m_imageFileName(imageFile)
 {
-  glGenTextures(1, &textureID);
-  glBindTexture(GL_TEXTURE_2D, textureID);
+  glGenTextures(1, &mTextureID);
+  glBindTexture(GL_TEXTURE_2D, mTextureID);
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -46,18 +46,13 @@ Texture::Texture(const std::string imageFile) : m_imageFileName(imageFile)
   stbi_image_free(data);
 }
 
-void Texture::use(unsigned int textureUnit) const
+void Textures::use(unsigned int textureUnit) const
 {
   glActiveTexture(GL_TEXTURE0 + textureUnit);
-  glBindTexture(GL_TEXTURE_2D, textureID);
+  glBindTexture(GL_TEXTURE_2D, mTextureID);
 }
 
-unsigned int Texture::getID()
-{
-  return textureID;
-}
-
-Texture::~Texture() {
-  glDeleteTextures(1, &textureID);
+Textures::~Textures() {
+  glDeleteTextures(1, &mTextureID);
 }
 

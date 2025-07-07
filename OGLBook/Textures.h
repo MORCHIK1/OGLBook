@@ -1,5 +1,4 @@
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#pragma once
 
 #include <glad/glad.h>
 #include <string>
@@ -7,25 +6,23 @@
 
 #include "stb_image.h"
 
-class Texture {
+class Textures {
 private:
-  unsigned int textureID;
+  unsigned int mTextureID;
 
   static const std::string BASE_TEXTURE_DIR;
 
   std::string m_imageFileName;
 
 public:
-  Texture(const std::string imageFile);
+  Textures(const std::string imageFile);
 
   void use(unsigned int textureUnit) const;
 
   const std::string& getImageFileName() const { return m_imageFileName; }
 
-  unsigned int getID();
+  unsigned int getID() { return mTextureID; }
 
-  ~Texture();
+  ~Textures();
+
 };
-
-
-#endif

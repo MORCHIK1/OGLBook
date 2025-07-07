@@ -68,15 +68,15 @@ Shader::Shader(const char* vertexShader, const char* fragmentShader)
   }
 
   //link shaders
-  ID = glCreateProgram();
-  glAttachShader(ID, vertex);
-  glAttachShader(ID, fragment);
-  glLinkProgram(ID);
+  mID = glCreateProgram();
+  glAttachShader(mID , vertex);
+  glAttachShader(mID , fragment);
+  glLinkProgram(mID );
 
-  glGetProgramiv(ID, GL_LINK_STATUS, &success);
+  glGetProgramiv(mID, GL_LINK_STATUS, &success);
 
   if (!success) {
-    glGetProgramInfoLog(ID, 512, NULL, infoLog);
+    glGetProgramInfoLog(mID  , 512, NULL, infoLog);
     std::cout << "ERROR SHADER PROGRAM LINKIN FAILED\n" << infoLog << std::endl;
   }
 
@@ -86,15 +86,15 @@ Shader::Shader(const char* vertexShader, const char* fragmentShader)
 
 void Shader::use()
 {
-  glUseProgram(ID);
+  glUseProgram(mID );
 }
 
 void Shader::setBool(const std::string& name, bool value) const
 {
-  GLint location = glGetUniformLocation(ID, name.c_str());
+  GLint location = glGetUniformLocation(mID , name.c_str());
 
   if (location == -1) {
-    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << ID << " (location was -1)!" << std::endl;
+    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << mID  << " (location was -1)!" << std::endl;
   }
 
   glUniform1i(location, static_cast<GLint>(value));
@@ -102,10 +102,10 @@ void Shader::setBool(const std::string& name, bool value) const
 
 void Shader::setInt(const std::string& name, int value) const
 {
-  GLint location = glGetUniformLocation(ID, name.c_str());
+  GLint location = glGetUniformLocation(mID , name.c_str());
 
   if (location == -1) {
-    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << ID << " (location was -1)!" << std::endl;
+    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << mID  << " (location was -1)!" << std::endl;
   }
 
   glUniform1i(location, value);
@@ -113,10 +113,10 @@ void Shader::setInt(const std::string& name, int value) const
 
 void Shader::setFloat(const std::string& name, float value) const
 {
-  GLint location = glGetUniformLocation(ID, name.c_str());
+  GLint location = glGetUniformLocation(mID , name.c_str());
 
   if (location == -1) {
-    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << ID << " (location was -1)!" << std::endl;
+    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << mID  << " (location was -1)!" << std::endl;
   }
 
   glUniform1f(location, value);
@@ -124,10 +124,10 @@ void Shader::setFloat(const std::string& name, float value) const
 
 void Shader::setMat4(const std::string& name, glm::mat4 value) const
 {
-  GLint location = glGetUniformLocation(ID, name.c_str());
+  GLint location = glGetUniformLocation(mID, name.c_str());
 
   if (location == -1) {
-    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << ID << " (location was -1)!" << std::endl;
+    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << mID  << " (location was -1)!" << std::endl;
   }
 
   glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
@@ -135,10 +135,10 @@ void Shader::setMat4(const std::string& name, glm::mat4 value) const
 
 void Shader::setVec3(const std::string& name, glm::vec3 value) const
 {
-  GLint location = glGetUniformLocation(ID, name.c_str());
+  GLint location = glGetUniformLocation(mID, name.c_str());
 
   if (location == -1) {
-    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << ID << " (location was -1)!" << std::endl;
+    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << mID << " (location was -1)!" << std::endl;
   }
 
   glUniform3fv(location, 1,&value[0]);
@@ -146,10 +146,10 @@ void Shader::setVec3(const std::string& name, glm::vec3 value) const
 
 void Shader::setVec3(const std::string& name, float x, float y, float z) const
 {
-  GLint location = glGetUniformLocation(ID, name.c_str());
+  GLint location = glGetUniformLocation(mID, name.c_str());
 
   if (location == -1) {
-    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << ID << " (location was -1)!" << std::endl;
+    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << mID << " (location was -1)!" << std::endl;
   }
 
   glUniform3f(location, x, y, z);
@@ -157,10 +157,10 @@ void Shader::setVec3(const std::string& name, float x, float y, float z) const
 
 void Shader::setVec2(const std::string& name, glm::vec2 value) const
 {
-  GLint location = glGetUniformLocation(ID, name.c_str());
+  GLint location = glGetUniformLocation(mID, name.c_str());
 
   if (location == -1) {
-    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << ID << " (location was -1)!" << std::endl;
+    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << mID << " (location was -1)!" << std::endl;
   }
 
   glUniform2fv(location, 1, &value[0]);
@@ -168,10 +168,10 @@ void Shader::setVec2(const std::string& name, glm::vec2 value) const
 
 void Shader::setVec2(const std::string& name, float x, float y) const
 {
-  GLint location = glGetUniformLocation(ID, name.c_str());
+  GLint location = glGetUniformLocation(mID, name.c_str());
 
   if (location == -1) {
-    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << ID << " (location was -1)!" << std::endl;
+    std::cout << "WARNING: Uniform '" << name << "' not found or active in shader program " << mID << " (location was -1)!" << std::endl;
   }
 
   glUniform2f(location, x, y);
@@ -179,5 +179,5 @@ void Shader::setVec2(const std::string& name, float x, float y) const
 
 Shader::~Shader()
 {
-  glDeleteProgram(ID);
+  glDeleteProgram(mID);
 }

@@ -30,7 +30,7 @@ struct PointLight{ //Street light type of light
   float quadraticTerm;
 };
 
-struct SpotLight{
+struct SpotLight{ //Flashlight type of light
   vec3 position;
   vec3 direction;
   float cutOff;

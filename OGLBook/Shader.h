@@ -1,5 +1,4 @@
-#ifndef SHADER_H
-#define SHADER_H
+#pragma once
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
@@ -11,11 +10,11 @@
 
 class Shader {
 private:
-  unsigned int ID;
+  unsigned int mID;
 public:
   Shader(const char* vertexShader, const char* fragmentShader);
 
-  const int getShaderID() const { return ID; }
+  const int getShaderID() const { return mID; }
 
   void use();
 
@@ -30,6 +29,3 @@ public:
 
   ~Shader();
 };
-
-
-#endif // !SHADER_H

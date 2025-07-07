@@ -4,9 +4,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <assimp/scene.h>
 
 #include "Shader.h"
-#include "Texture.h"
+#include "Textures.h"
 #include "Camera.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -46,8 +47,8 @@ int main()
   Shader cubeShader("cubeVertexShader.vert", "cubeFragmentShader.frag");
   Shader lightShader("lightVertexShader.vert", "lightFragmentShader.frag");
 
-  Texture containerTexture("container2.png");
-  Texture specularContainerTexture("container2_specular.png");
+  Textures containerTexture("container2.png");
+  Textures specularContainerTexture("container2_specular.png");
 
   camera.setupInputCallback();
 

@@ -9,23 +9,23 @@ class Camera
 {
 private:
   //Euler angles
-  float pitch;
-  float yaw;
+  float mPitch;
+  float mYaw;
 
   // Camera Attributes
-  glm::vec3 cameraPos;
-  glm::vec3 cameraUp;
-  glm::vec3 cameraFront;
-  glm::vec3 cameraRight;
-  const glm::vec3 worldUp;
+  glm::vec3 mCameraPos;
+  glm::vec3 mCameraUp;
+  glm::vec3 mCameraFront;
+  glm::vec3 mCameraRight;
+  const glm::vec3 mWorldUp;
 
-  GLFWwindow* window;
+  GLFWwindow* mWindow;
 
   //Screen and mouse data
-  float lastX;
-  float lastY;
-  float fov;
-  bool firstMouse;
+  float mLastX;
+  float mLastY;
+  float mFov;
+  bool mFirstMouse;
 
   static void zoomCallback(GLFWwindow* window, double xoffset, double yoffset);
   static void cursorCallback(GLFWwindow* window, double xposIn, double yposIn);
@@ -35,14 +35,14 @@ public:
 
   void setupInputCallback();
 
-  glm::mat4 getView();
+  glm::mat4 getView() { return glm::lookAt(mCameraPos, mCameraPos + mCameraFront, mCameraUp); }
 
   glm::mat4 getPerspective(float screenWidth, float screenHeight);
 
-  float getFov();
+  float getFov() { return mFov; }
 
-  glm::vec3 getCameraPos();
-  glm::vec3 getCameraFront();
+  glm::vec3 getCameraPos() { return mCameraPos; }
+  glm::vec3 getCameraFront() { return mCameraFront; }
 
   void processInput(float deltaTime);
 };
