@@ -39,6 +39,9 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stb_image.h">
@@ -56,12 +59,15 @@
     <ClInclude Include="Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="cubeVertexShader.vert">
+    <None Include="model.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="cubeFragmentShader.frag">
+    <None Include="model.frag">
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="lightVertexShader.vert">
